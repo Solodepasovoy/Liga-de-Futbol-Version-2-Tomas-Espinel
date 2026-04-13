@@ -183,10 +183,88 @@
          //Ver historial de jornadas
         }else if (respuesta == 'h') {
     
+        do {
+            ifstream fechas_in("data/fechas.txt"); // 🔥 abrir SIEMPRE dentro del loop
+            
+            if (fechas_in.is_open()){
+                int NumeroFecha, marcalocal, marcavisitante; 
+                string localA, VisitanteA;
+                int jornada;
+    
+                cout<<"Cual Jornada quiere consultar?\n";
+                cin>>jornada;
+    
+                if (jornada > 0){
+                    cout<<"Jornada #"<<jornada<<endl;
+    
+                    for (int i = 1; i <= NumPartidos; i++){
+                        fechas_in >> NumeroFecha >> localA >> VisitanteA >> marcalocal >> marcavisitante;
+    
+                        if (NumeroFecha == jornada){
+                            cout<<localA<<" VS "<<VisitanteA<<"| Goles: "<<marcalocal<<","<<marcavisitante<<endl;
+                        }
+                    }
+    
+                    fechas_in.close(); 
+    
+                } else {
+                    cout<<"Porfavor introduzca una Jornada de 1 en adelante.\n";
+                    verjornada = 'n';
+                }
+    
+            } else {
+                cout<<"fechas.txt no se pudo abrir\n";
+                verjornada = 'n';
+                break;
+            }
+    
+            cout<<"Quiere ver otra jornada? y/n\n";
+            cin>>verjornada;
+    
+        } while (verjornada == 'y');
+    
+        cout<<"Volviendo al menu\n";
+        respuesta = 'm';
+     
+        
+        
         
          //Ver lista de partidos
         }else if (respuesta == 'p') { //paso 5
-
+        ifstream partidos_in("data/partidos.txt");
+        
+        if (partidos_in.is_open()) {
+            string ligaNombre, ganador, perdedor; 
+                int golesganador, golesperdedor, difgoles, puntosganador, puntosperdedor;
+                cout<<"Partido|Liga|Ganador|Perdedor|GolesGanador|GolesPerdedor|DifGoles|PuntosGanador|PuntosPerdedor|Estado\n";
+            //Por cada linea poner lo siguiente
+            for (int i = 1;i <=NumPartidos;i++){
+            partidos_in>>ligaNombre>>ganador>>perdedor>>golesganador>>golesperdedor>>difgoles>>puntosganador>>puntosperdedor;
+            cout<<i<<"|"<<ligaNombre<<"|"<<ganador<<"|"<<perdedor<<"|"<<golesganador<<"|"<<golesperdedor<<"|"<<difgoles<<"|"<<puntosganador<<"|"<<puntosperdedor<<"|";
+            if (difgoles == 0) {
+            cout<<"Empate";  
+            } else {
+            cout<<"No Empate"; 
+            }
+            cout<<endl;
+            }
+            partidos_in.close();
+            
+            cout<<"Presione cualquier tecla para volver al Menu\n";
+            cin>>respuesta;
+            if (respuesta == 'm'){
+                
+            } else {
+                respuesta = 'm';
+            }
+            
+        } else {
+            cout<<"partidos_in no se pude abrir, regresando al menu\n";
+            respuesta = 'm';
+        }
+     
+     
+     
         //salir
         }else if (respuesta == 's') { //paso 5
             cout<<"Adios";
