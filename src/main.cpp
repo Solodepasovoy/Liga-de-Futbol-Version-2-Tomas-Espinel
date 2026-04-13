@@ -46,6 +46,7 @@
             
         //Registrar resultados
         } else if (respuesta == 'r') { //paso 5
+        do { //paso 7 do
         //el if de si pone si empieza aqui
         cout<<"Equipos Disponibles:\n";
         //lista de equipos
@@ -97,51 +98,95 @@
                 cout<<"Coloque una fecha desde uno en adelante\n";
                 respuesta = 'm';
         
-            
-        } 
+        //Que pasa si se dieron bien las instrucciones   
+        } else {
+            if (partidos.is_open()) {
+                //liga;ganador;perdedor;goles del ganador;goles del perdedor;dif de goles;puntos ganador; puntos perdedor"
+    	    partidos<<liga<<" ";
+    	    //Gana el local
+                if (marcadorlocal > marcadorvisitante) {
+                    int dif = marcadorlocal - marcadorvisitante;
+                    partidos<<local<<" ";
+                    partidos<<visitante<<" ";
+                    partidos<<marcadorlocal<<" ";
+                    partidos<<marcadorvisitante<<" ";
+                    partidos<<dif<<" ";
+                    partidos<<victoria<<" ";
+                    partidos<<derrota<<"\n";
+                    partidos.flush();
+            //Gana el visitante
+                } else if (marcadorlocal < marcadorvisitante) {
+                    int dif = marcadorvisitante - marcadorlocal;
+                    partidos<<visitante<<" ";
+                    partidos<<local<<" ";
+                    partidos<<marcadorvisitante<<" ";
+                    partidos<<marcadorlocal<<" ";
+                    partidos<<dif<<" ";
+                    partidos<<victoria<<" ";
+                    partidos<<derrota<<"\n";
+                    partidos.flush();
+            //empate (Recuerda que para hacer la tabla debes usar el dif para determinar si hubo empate o no)
+                } else {
+                    int dif = marcadorvisitante - marcadorlocal;
+                    partidos<<visitante<<" ";
+                    partidos<<local<<" ";
+                    partidos<<marcadorvisitante<<" ";
+                    partidos<<marcadorlocal<<" ";
+                    partidos<<dif<<" ";
+                    partidos<<empate<<" ";
+                    partidos<<empate<<"\n";
+                    partidos.flush();
+                }
+                NumPartidos++;
+                ofstream registros_out("data/registros.txt");
+                if (registros_out.is_open()) {
+                    registros_out << NumPartidos;
+                    registros_out.close();
+                }
+                if (fechas.is_open()) {
+                fechas<<NumFecha<<" ";
+                fechas<<local<<" ";
+                fechas<<visitante<<"\n";
+                fechas<<marcadorlocal<<endl;
+                fechas<<marcadorvisitante<<endl;
+                
+                fechas.flush();
+                } else {
+                    cout<<"No se puede crear fechas.txt\n";
+                    respuesta = 'm';
+                }
+                cout << "Partido #" << NumPartidos << " creado." << endl;
+                
+            } else {
+                cout<<"partidos.txt no se pudo crear\n";
+                respuesta = 'm';
+            }
+        }
+        cout<<"Quiere crear un nuevo partido? Ponga y/n:\n";
+        cin>>registro;
+        if (registro =='n') {
+            respuesta = 'm';
+        } else if (registro == 'y'){
+    
+        } else {
+            cout<<"Se ingreso un comando invalido, volviendo al menu\n";
+            respuesta = 'm';
+        }
+        } while (registro == 'y');
+        cout << "Total de partidos creados: " << NumPartidos << endl;
+        
+        //Aqui termina el r
+        
         //hacer la tabla
         }else if (respuesta == 't') { //paso 5
     
          //Ver historial de jornadas
         }else if (respuesta == 'h') {
-        
+    
         
          //Ver lista de partidos
         }else if (respuesta == 'p') { //paso 5
-        ifstream partidos_in("partidos.txt");
-        
-        if (partidos_in.is_open()) {
-            string ligaNombre, ganador, perdedor; 
-                int golesganador, golesperdedor, difgoles, puntosganador, puntosperdedor;
-                cout<<"Partido|Liga|Ganador|Perdedor|GolesGanador|GolesPerdedor|DifGoles|PuntosGanador|PuntosPerdedor|Estado\n";
-            //Por cada linea poner lo siguiente
-            for (int i = 1;i <=NumPartidos;i++){
-            partidos_in>>ligaNombre>>ganador>>perdedor>>golesganador>>golesperdedor>>difgoles>>puntosganador>>puntosperdedor;
-            cout<<i<<"|"<<ligaNombre<<"|"<<ganador<<"|"<<perdedor<<"|"<<golesganador<<"|"<<golesperdedor<<"|"<<difgoles<<"|"<<puntosganador<<"|"<<puntosperdedor<<"|";
-            if (difgoles == 0) {
-            cout<<"Empate";  
-            } else {
-            cout<<"No Empate"; 
-            }
-            cout<<endl;
-            }
-            partidos_in.close();
-            
-            cout<<"Presione cualquier tecla para volver al Menu\n";
-            cin>>respuesta;
-            if (respuesta == 'm'){
-                
-            } else {
-                respuesta = 'm';
-            }
-            
-        } else {
-            cout<<"partidos_in no se pude abrir, regresando al menu\n";
-            respuesta = 'm';
-        }
-     
-     
-     
+
         //salir
         }else if (respuesta == 's') { //paso 5
             cout<<"Adios";

@@ -1,10 +1,1 @@
-# Configuracion de la liga
-nombre=AguilaLeague
-victoria=10
-empate=2
-derrota=-5
-equipo=Tombos
-equipo=Rolos
-equipo=Barrio
-equipo=Costa
-equipo=Campesinos
+AguilaLeague 10 2 -5 Tombos Rolos Barrio Costa Campesinos
