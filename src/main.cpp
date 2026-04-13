@@ -1,8 +1,41 @@
 #include <iostream>
-    #include <fstream>
-    #include <string>
-    using namespace std;
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+struct ConfigLiga {
+    string nombre;
+    int victoria, empate, derrota;
+    vector<string> equipos;
+};
+
+struct Partido {
+    string liga;
+    int jornada;
+    string local, visitante;
+    int golesLocal, golesVisitante;
+};
+
+struct Equipo {
+    string nombre;
+    int PJ=0, PG=0, PE=0, PP=0, GF=0, GC=0, DG=0, PTS=0;
+};
+
+bool leerConfig(string ruta, ConfigLiga& cfg);
+void leerPartidos(string ruta, vector<Partido>& partidos);
+void guardarPartido(string ruta, Partido p);
+void guardarEnFechas(string ruta, Partido p);
+void actualizarEquipo(Equipo* eq, int gf, int gc, int pts);
+void construirTabla(vector<Partido>& partidos, ConfigLiga& cfg, vector<Equipo>& tabla);
+void ordenarTabla(vector<Equipo>& tabla);
+void mostrarTabla(vector<Equipo>& tabla);
+void mostrarJornada(string ruta, int jornada, int numPartidos);
+char mostrarMenu(string liga);
+bool ingresarPartido(ConfigLiga& cfg, Partido& p);
     
+// Int Main:
     int main () {
         //Identifica el archivo inicial y externos (paso 1)
         ifstream config("data/config.txt");
